@@ -18,7 +18,7 @@ function groupByTag(list: Obra[]) {
   return [...groups.entries()];
 }
 
-export function ObrasCoverage() {
+export function ObrasCoverage({ mapSvg }: { mapSvg?: string }) {
   const [selectedState, setSelectedState] = useState<string | null>("BRSP");
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [query, setQuery] = useState("");
@@ -46,6 +46,7 @@ export function ObrasCoverage() {
           selectedState={selectedState}
           onSelectState={setSelectedState}
           onHoverState={setHoveredState}
+          mapSvg={mapSvg}
         />
         <p className="mt-3.5 text-center font-mono text-[10px] tracking-[0.12em] text-muted-dim uppercase">
           Passe o mouse ou clique em um estado para ver as obras

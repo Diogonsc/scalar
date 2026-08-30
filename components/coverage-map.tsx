@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { stateLabel } from "@/lib/mapdata";
 import { obras, obrasInState, type Obra } from "@/lib/obras";
-import { cn } from "@/lib/utils";
 
 const MAP_SRC = "/maps/brazil.svg";
 
@@ -19,10 +18,12 @@ export function CoverageMap({
   selectedState,
   onSelectState,
   onHoverState,
+  mapSvg,
 }: {
   selectedState: string | null;
   onSelectState: (stateId: string | null) => void;
   onHoverState?: (stateId: string | null) => void;
+  mapSvg?: string;
 }) {
   const mapRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -57,39 +58,67 @@ export function CoverageMap({
 
     let cancelled = false;
 
-    async function load() {
-      const response = await fetch(MAP_SRC);
-      const svg = await response.text();
-      if (cancelled || !container) return;
-
-      container.innerHTML = svg;
-      const root = container.querySelector("svg");
-      if (!root) return;
-
+    function prepareSvg(root: SVGSVGElement) {
       root.removeAttribute("width");
       root.removeAttribute("height");
       root.setAttribute("width", "100%");
       root.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      root.setAttribute(
+        "viewBox",
+        root.getAttribute("viewBox") ??
+          root.getAttribute("viewbox") ??
+          "0 0 1000 912",
+      );
       root.setAttribute("role", "img");
       root.setAttribute("aria-label", "Mapa de cobertura do Brasil");
       root.querySelector("#points")?.remove();
       root.querySelector("#label_points")?.remove();
+    }
 
-      const features = root.querySelector("#features");
-      if (features instanceof SVGGraphicsElement) {
+    function cropViewBox(root: SVGSVGElement) {
+      try {
+        const features = root.querySelector("#features");
+        if (!(features instanceof SVGGraphicsElement)) return;
         const box = features.getBBox();
+        if (box.width < 1 || box.height < 1) return;
         const pad = 10;
         root.setAttribute(
           "viewBox",
           `${box.x - pad} ${box.y - pad} ${box.width + pad * 2} ${box.height + pad * 2}`,
         );
-      } else {
-        root.setAttribute(
-          "viewBox",
-          root.getAttribute("viewBox") ?? "0 0 1000 912",
-        );
+      } catch {
+        // getBBox falha se o SVG ainda não foi pintado — mantém o viewBox original
       }
-      setReady(true);
+    }
+
+    async function load() {
+      try {
+        let svg = mapSvg;
+        if (!svg) {
+          const response = await fetch(MAP_SRC, { cache: "force-cache" });
+          if (!response.ok) {
+            throw new Error(`Falha ao carregar o mapa (${response.status})`);
+          }
+          svg = await response.text();
+        }
+        if (cancelled || !container) return;
+        if (!svg.includes("<svg")) {
+          throw new Error("Arquivo do mapa inválido");
+        }
+
+        container.innerHTML = svg;
+        const root = container.querySelector("svg");
+        if (!root) return;
+
+        prepareSvg(root);
+        setReady(true);
+        requestAnimationFrame(() => {
+          if (!cancelled) cropViewBox(root);
+        });
+      } catch (error) {
+        console.error(error);
+        if (!cancelled) setReady(false);
+      }
     }
 
     void load();
@@ -97,7 +126,7 @@ export function CoverageMap({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [mapSvg]);
 
   useEffect(() => {
     const container = mapRef.current;
@@ -179,14 +208,14 @@ export function CoverageMap({
       className="relative max-[980px]:mx-[calc(8px-clamp(20px,5vw,72px))]"
     >
       {!ready ? (
-        <div className="flex aspect-1000/912 min-h-[280px] items-center justify-center border border-line-strong bg-panel-3 font-mono text-[11px] tracking-[0.08em] text-muted-dim uppercase min-[981px]:min-h-[640px]">
+        <div className="pointer-events-none absolute inset-0 z-[1] flex min-h-[280px] items-center justify-center border border-line-strong bg-panel-3 font-mono text-[11px] tracking-[0.08em] text-muted-dim uppercase min-[981px]:min-h-[640px]">
           Carregando mapa…
         </div>
       ) : null}
       <div
         id="map"
         ref={mapRef}
-        className={cn("coverage-map", !ready && "hidden")}
+        className="coverage-map min-h-[280px] min-[981px]:min-h-[640px]"
       />
       {tooltip ? (
         <div

@@ -1,8 +1,16 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+
 import { Eyebrow } from "@/components/eyebrow";
 import { ObrasCoverage } from "@/components/obras-coverage";
 import { Reveal } from "@/components/reveal";
 
-export function ObrasSection() {
+export async function ObrasSection() {
+  const mapSvg = await readFile(
+    path.join(process.cwd(), "public/maps/brazil.svg"),
+    "utf8",
+  );
+
   return (
     <section
       id="obras"
@@ -21,7 +29,7 @@ export function ObrasSection() {
           </p>
         </Reveal>
 
-        <ObrasCoverage />
+        <ObrasCoverage mapSvg={mapSvg} />
       </div>
     </section>
   );
