@@ -55,7 +55,7 @@ export function ContatoSection() {
         </Reveal>
 
         <div className="grid gap-12 min-[981px]:grid-cols-[0.9fr_1.1fr] min-[981px]:gap-20">
-          <Reveal>
+          <Reveal delay={0.06}>
             <div className="flex gap-4 border-b border-line py-[18px]">
               <div className="w-[90px] shrink-0 pt-0.5 font-mono text-[11px] tracking-[0.06em] text-muted-dim uppercase">
                 Telefone
@@ -98,7 +98,7 @@ export function ContatoSection() {
             </div>
           </Reveal>
 
-          <Reveal>
+          <Reveal delay={0.12}>
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 gap-px border border-line-strong bg-line-strong min-[981px]:grid-cols-2">
                 <Field id="contato-nome" label="Nome *">

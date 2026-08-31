@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useMotionValueEvent, useScroll } from "motion/react";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { buttonVariants } from "@/components/ui/button";
@@ -6,8 +10,22 @@ import { navLinks } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (value) => {
+    setScrolled(value > 16);
+  });
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/72 backdrop-blur-[14px]">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 border-b backdrop-blur-[14px] transition-[background-color,border-color] duration-300",
+        scrolled
+          ? "border-line bg-ink/88"
+          : "border-transparent bg-ink/72",
+      )}
+    >
       <div className="wrap flex h-[78px] items-center justify-between">
         <BrandLogo priority />
 

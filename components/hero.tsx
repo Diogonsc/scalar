@@ -1,7 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "motion/react";
 
 import { Eyebrow } from "@/components/eyebrow";
 import {
@@ -50,9 +56,21 @@ function HeroTraces() {
   );
 }
 
+const ease = [0.2, 0.8, 0.2, 1] as const;
+
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const tracesY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 180]);
+  const gridY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 90]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -48]);
 
   const onSelect = useCallback((carousel: CarouselApi) => {
     if (!carousel) return;
@@ -83,16 +101,35 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-svh flex-col overflow-x-hidden bg-[radial-gradient(120%_90%_at_82%_8%,rgba(79,209,197,0.10),transparent_55%),radial-gradient(90%_70%_at_15%_100%,rgba(240,169,58,0.08),transparent_60%),var(--ink)] min-[981px]:justify-end"
+      ref={sectionRef}
+      className="relative flex min-h-svh flex-col overflow-x-clip bg-[radial-gradient(120%_90%_at_82%_8%,rgba(79,209,197,0.10),transparent_55%),radial-gradient(90%_70%_at_15%_100%,rgba(240,169,58,0.08),transparent_60%),var(--ink)] min-[981px]:justify-end"
     >
       <div
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--line)_1px,transparent_1px),linear-gradient(90deg,var(--line)_1px,transparent_1px)] bg-size-[64px_64px] mask-[linear-gradient(to_bottom,black,transparent_92%)]"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden
-      />
-      <HeroTraces />
+      >
+        <motion.div
+          className="absolute inset-0 bg-[linear-gradient(var(--line)_1px,transparent_1px),linear-gradient(90deg,var(--line)_1px,transparent_1px)] bg-size-[64px_64px] mask-[linear-gradient(to_bottom,black,transparent_92%)] will-change-transform"
+          style={{ y: gridY }}
+        />
+        <motion.div
+          className="absolute inset-0 will-change-transform"
+          style={{ y: tracesY }}
+        >
+          <HeroTraces />
+        </motion.div>
+      </div>
 
-      <div className="wrap relative z-[2] flex flex-1 flex-col justify-center pt-[108px] pb-8 min-[981px]:flex-none min-[981px]:justify-end min-[981px]:pt-[150px] min-[981px]:pb-0">
-        <Eyebrow className="max-w-full">
+      <motion.div
+        className="wrap relative z-[2] flex flex-1 flex-col justify-center pt-[108px] pb-8 will-change-transform min-[981px]:flex-none min-[981px]:justify-end min-[981px]:pt-[150px] min-[981px]:pb-0"
+        style={{ y: contentY }}
+      >
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, ease, delay: 0.08 }}
+        >
+          <Eyebrow className="max-w-full">
           <span className="sm:hidden">Redes ópticas / Goiânia</span>
           <span className="hidden sm:inline">
             Engenharia de redes ópticas / Goiânia, Brasil
@@ -162,7 +199,8 @@ export function Hero() {
             {heroActions.secondary.label}
           </Link>
         </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       <div className="relative z-[2] mt-auto border-t border-line min-[981px]:mt-16">
         <div className="wrap flex items-center justify-between py-3.5 min-[981px]:py-[18px]">
@@ -180,9 +218,13 @@ export function Hero() {
               />
             ))}
           </div>
-          <div className="hidden font-mono text-[11px] tracking-[0.1em] text-muted-dim sm:block">
+          <motion.div
+            className="hidden font-mono text-[11px] tracking-[0.1em] text-muted-dim sm:block"
+            animate={reduce ? undefined : { y: [0, 5, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          >
             SCROLL ↓
-          </div>
+          </motion.div>
           <div className="flex gap-2">
             <button
               type="button"

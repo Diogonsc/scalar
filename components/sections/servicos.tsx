@@ -20,9 +20,10 @@ export function ServicosSection() {
         </Reveal>
 
         <div className="border-t border-line">
-          {services.map((service) => (
+          {services.map((service, index) => (
             <Reveal
               key={service.index}
+              delay={index * 0.1}
               className="group grid items-start gap-3.5 border-b border-line py-[52px] min-[981px]:grid-cols-[90px_1fr_1.1fr] min-[981px]:gap-10"
             >
               <div className="pt-0 font-mono text-sm text-trace transition-colors group-hover:text-amber min-[981px]:pt-2.5">

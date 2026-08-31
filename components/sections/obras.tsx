@@ -29,7 +29,9 @@ export async function ObrasSection() {
           </p>
         </Reveal>
 
-        <ObrasCoverage mapSvg={mapSvg} />
+        <Reveal delay={0.08}>
+          <ObrasCoverage mapSvg={mapSvg} />
+        </Reveal>
       </div>
     </section>
   );

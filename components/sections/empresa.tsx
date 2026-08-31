@@ -1,4 +1,5 @@
 import { Eyebrow } from "@/components/eyebrow";
+import { Parallax } from "@/components/parallax";
 import { Reveal } from "@/components/reveal";
 
 export function EmpresaSection() {
@@ -16,7 +17,7 @@ export function EmpresaSection() {
         </Reveal>
 
         <div className="grid items-start gap-12 min-[981px]:grid-cols-[1.1fr_0.9fr] min-[981px]:gap-20">
-          <Reveal className="text-base leading-[1.8] text-muted-foreground">
+          <Reveal delay={0.1} className="text-base leading-[1.8] text-muted-foreground">
             <p className="mb-5">
               Somos uma empresa <strong className="font-semibold text-foreground">brasileira</strong>,
               com atuação em todo o território nacional, dedicada ao fornecimento de serviços de
@@ -37,7 +38,11 @@ export function EmpresaSection() {
             </p>
           </Reveal>
 
-          <Reveal className="relative border border-line-strong bg-[linear-gradient(var(--line)_1px,transparent_1px)_0_0/100%_24px,linear-gradient(90deg,var(--line)_1px,transparent_1px)_0_0/24px_100%,var(--panel-3)] p-8">
+          <Parallax offset={36}>
+            <Reveal
+              delay={0.18}
+              className="relative border border-line-strong bg-[linear-gradient(var(--line)_1px,transparent_1px)_0_0/100%_24px,linear-gradient(90deg,var(--line)_1px,transparent_1px)_0_0/24px_100%,var(--panel-3)] p-8"
+            >
             <span className="absolute top-[-1px] left-[-1px] size-3.5 border border-r-0 border-b-0 border-trace" />
             <span className="absolute right-[-1px] bottom-[-1px] size-3.5 border border-t-0 border-l-0 border-trace" />
 
@@ -90,7 +95,8 @@ export function EmpresaSection() {
                 </div>
               </div>
             </div>
-          </Reveal>
+            </Reveal>
+          </Parallax>
         </div>
       </div>
     </section>
