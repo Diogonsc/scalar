@@ -91,7 +91,7 @@ export function ContatoSection() {
                 Rede
               </div>
               <div className="text-[15px] leading-[1.6]">
-                <a href="#" aria-label="LinkedIn" className="hover:text-trace">
+                <a href="https://www.linkedin.com/in/scalar-telecom-253927198/" aria-label="LinkedIn" className="hover:text-trace">
                   LinkedIn ↗
                 </a>
               </div>

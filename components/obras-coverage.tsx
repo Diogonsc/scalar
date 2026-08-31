@@ -19,7 +19,7 @@ function groupByTag(list: Obra[]) {
 }
 
 export function ObrasCoverage({ mapSvg }: { mapSvg?: string }) {
-  const [selectedState, setSelectedState] = useState<string | null>("BRSP");
+  const [selectedState, setSelectedState] = useState<string | null>("BRGO");
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
