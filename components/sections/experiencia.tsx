@@ -10,7 +10,7 @@ export function ExperienciaSection() {
       <div className="wrap">
         <Reveal className="grid items-center gap-8 md:grid-cols-[auto_1fr] md:gap-14">
           <div className="relative">
-            <div className="bg-[linear-gradient(160deg,#fff_10%,var(--amber)_60%,var(--amber-dim)_100%)] bg-clip-text font-heading text-[clamp(140px,17vw,260px)] leading-[0.82] font-black text-transparent">
+            <div className="bg-[linear-gradient(160deg,#fff_10%,var(--amber)_60%,var(--amber-dim)_100%)] bg-clip-text font-heading text-[clamp(280px,34vw,520px)] leading-[0.82] font-black text-transparent">
               25
             </div>
             <span className="absolute bottom-[0.16em] left-1 font-mono text-sm font-semibold tracking-[0.3em] text-trace">

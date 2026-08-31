@@ -13,34 +13,35 @@ export const heroActions = {
 export const heroSlides = [
   {
     index: "01",
-    label: "Implantação",
-    titleBefore: "Conectamos o Brasil, ",
-    titleEm: "fibra por fibra.",
-    titleAfter: "",
-    description:
-      "Mais de 7.000 km de redes ópticas projetadas, licenciadas e construídas para as maiores operadoras do país — no subsolo e no ar.",
-    stat: { value: "7.000", suffix: "km+", label: "Rede óptica construída" },
-  },
-  {
-    index: "02",
-    label: "Manutenção",
-    titleBefore: "Operação ",
-    titleEm: "24×7",
-    titleAfter: ", em todo o território nacional.",
-    description:
-      "De uma equipe dedicada a uma operação completa: mantemos redes aéreas e subterrâneas no ar, com resposta contínua.",
-    stat: { value: "24", suffix: "/7", label: "Operação contínua" },
-  },
-  {
-    index: "03",
     label: "Experiência",
     titleBefore: "25 anos de ",
     titleEm: "engenharia",
     titleAfter: " a serviço da conexão.",
     description:
-      "Fundada por três engenheiros de telecomunicações, a Scalar é parceira das maiores operadoras e fabricantes do setor.",
+      "Com 25 anos de experiência a Scalar Telecom presta os mais variados serviços para o mercado de telecomunicações. sempre superando as expectativas de nossos clientes.",
     stat: { value: "25", suffix: "", label: "Anos de mercado" },
   },
+  {
+    index: "02",
+    label: "Qualidade",
+    titleBefore: "Conectamos o Brasil, ",
+    titleEm: "fibra por fibra.",
+    titleAfter: "",
+    description:
+      "Buscamos sempre a excelência em nossos serviços, estabelecendo a cada dia padrões mais altos de qualidade.",
+    stat: { value: "7.000", suffix: "km+", label: "Rede óptica construída" },
+  },
+  {
+    index: "03",
+    label: "Comprometimento",
+    titleBefore: "Operação ",
+    titleEm: "24×7",
+    titleAfter: ", em todo o território nacional.",
+    description:
+      "Compromisso com a técnica apurada aliado ao atendimento aos prazos estabelecidos, garantem que sua empresa esteja sempre conectada com o que há de melhor no mercado.",
+    stat: { value: "24", suffix: "/7", label: "Operação contínua" },
+  },
+ 
 ] as const;
 
 export const services = [
